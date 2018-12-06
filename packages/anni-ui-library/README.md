@@ -1,4 +1,6 @@
-# UI Library Setup
+# Anni UI Library
+
+An library of UI components to use across the product applications of Anni.
 
 https://anni-platform.github.io/anni-ui-library
 
