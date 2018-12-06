@@ -1,6 +1,6 @@
 # UI Library Setup
 
-[View this project's storybook](https://jonathanhudak.com/ui-lib-starter/)
+https://anni-platform.github.io/anni-ui-library
 
 A boilerplate project to get up and running building a UI library using:
 - React
@@ -8,7 +8,7 @@ A boilerplate project to get up and running building a UI library using:
 - storybook
 
 ## Setup
-1. Clone repo: `git clone git@github.com:jonathanhudak/react-storybook-styled-components-gh-pages.git`
+1. Clone repo: `git clone git@github.com:anni-platform/anni-ui-library.git`
 2. `npm install`
 
 ## Local Development
