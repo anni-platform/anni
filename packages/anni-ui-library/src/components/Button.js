@@ -1,16 +1,19 @@
 import styled from 'styled-components';
 import utils from '../utils';
-import { CHARCOAL, COPPER, EASE_OUT_EXPO } from '../constants';
+import { EASE_OUT_EXPO } from '../constants';
 
 export const Button = styled.button`
   align-items: center;
   backface-visibility: hidden;
-  background: ${props => (!props.primary || props.link ? 'none' : `${COPPER}`)};
+  background: ${props =>
+    !props.primary || props.link ? 'none' : `${props.theme.colorPrimary}`};
   border: ${props =>
-    props.noBorder || props.link ? 'none' : `2px solid ${COPPER}`};
+    props.noBorder || props.link
+      ? 'none'
+      : `2px solid ${props.theme.colorPrimary}`};
   border: ${props => props.stacked && 'none'};
   border-radius: 80px;
-  color: ${CHARCOAL};
+  color: ${props => props.theme.textPrimary};
   cursor: pointer;
   display: inline-flex;
   flex-direction: ${props => props.stacked && 'column'};
@@ -44,12 +47,13 @@ export const Button = styled.button`
 
   svg {
     ${utils.padding};
-    fill: ${props => (props.fill ? `${CHARCOAL}` : 'transparent')};
+    fill: ${props => (props.fill ? props.theme.textPrimary : 'transparent')};
     height: ${props => (props.iconSize ? `${props.iconSize}px` : '18px')};
     margin-right: ${props => (props.stacked ? '0' : '6px')};
     margin-bottom: ${props => (props.stacked ? '6px' : '0')};
-    stroke: ${props => (props.fill ? 'transparent' : `${CHARCOAL}`)};
-    stroke: ${props => props.stacked && `${CHARCOAL}`};
+    stroke: ${props =>
+      props.fill ? 'transparent' : `${props.theme.textPrimary}`};
+    stroke: ${props => props.stacked && `${props.theme.textPrimary}`};
     stroke-width: ${props =>
       props.strokeWidth ? `${props.strokeWidth}px` : '6px'};
     stroke-width: ${props => props.fill && '6px'};

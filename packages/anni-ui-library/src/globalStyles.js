@@ -33,4 +33,9 @@ export const GlobalStyles = createGlobalStyle`
   html {
     -webkit-font-smoothing: antialiased;
   }
+
+  body {
+    color: ${props => props.theme.textColor};
+    background-color: ${props => props.theme.bgA};
+  }
 `;
