@@ -4,10 +4,10 @@ import { createGlobalStyle } from 'styled-components';
  * Font Definitions
  */
 
-import ApercuRegular from './fonts/ApercuTrial-Regular.ttf';
-import ApercuMedium from './fonts/ApercuTrial-Medium.ttf';
-import ApercuBold from './fonts/ApercuTrial-Bold.ttf';
-import ApercuMono from './fonts/ApercuTrial-Mono.ttf';
+import ApercuRegular from './fonts/ApercuTrial-Regular.woff';
+import ApercuMedium from './fonts/ApercuTrial-Medium.woff';
+import ApercuBold from './fonts/ApercuTrial-Bold.woff';
+import ApercuMono from './fonts/ApercuTrial-Mono.woff';
 
 export const GlobalStyles = createGlobalStyle`
   @font-face {
