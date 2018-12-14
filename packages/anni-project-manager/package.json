@@ -1,7 +1,8 @@
 {
-  "name": "anni-pma",
+  "name": "anni-project-manager-application",
   "version": "0.1.0",
   "private": true,
+  "homepage": "http://anni.io/project-manager-application",
   "dependencies": {
     "react": "^16.7.0-alpha.2 - next",
     "react-dom": "^16.7.0-alpha.2 - next",
@@ -13,7 +14,9 @@
     "test": "react-scripts test --env=jsdom",
     "test:staged": "cross-env CI=true react-scripts test --env=jsdom --findRelatedTests",
     "eject": "react-scripts eject",
-    "precommit": "lint-staged"
+    "precommit": "lint-staged",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -21,6 +24,7 @@
   "browserslist": [">0.2%", "not dead", "not ie <= 11", "not op_mini all"],
   "devDependencies": {
     "eslint-plugin-prettier": "^3.0.0",
+    "gh-pages": "^2.0.1",
     "jest-dom": "^3.0.0",
     "prettier": "^1.15.3",
     "react-testing-library": "^5.3.2"
