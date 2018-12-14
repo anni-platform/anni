@@ -1,29 +1,24 @@
-# Anni UI Library
-
-An library of UI components to use across the product applications of Anni.
-
-https://anni-platform.github.io/anni-ui-library
-
-A boilerplate project to get up and running building a UI library using:
-- React
-- styled-components
-- storybook
-
 ## Setup
-1. Clone repo: `git clone git@github.com:anni-platform/anni-ui-library.git`
+
+1. Install Node 10.12.0
 2. `npm install`
 
-## Local Development
-1. `npm start` will open up `http://localhost:9001/`
-2. build components
+## Develop
 
-## Deployment
-1. `git remote add origin git@github.com:anni-platform/anni-ui-library.git`
-2. Run `npm run deploy-storybook`
+1. `npm start`
 
-### Reference Links
-- [react](http://reactjs.org/)
-- [storybook](https://storybook.js.org/basics/guide-react/)
-- [storybook-deployer](https://github.com/storybooks/storybook-deployer)
-- [styled-components](https://www.styled-components.com/)
-- [stylelint](https://github.com/stylelint/stylelint)
+## Build Module Library
+
+1. `npm run build`
+
+Outputs: `./index.js` and `lib/*.js`
+
+## Deploy storybook to Github Pages
+
+1. `npm run deploy-storybook`
+
+## Publish to npm
+
+1. `npm login`
+2. `npm run publish`
+3. Answer questions from np

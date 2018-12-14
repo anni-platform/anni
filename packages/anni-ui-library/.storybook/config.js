@@ -1,7 +1,7 @@
 import React from 'react';
 import { addDecorator, configure } from '@storybook/react';
-import { GlobalStyles } from '../src/globalStyles';
-import { withThemesProvider} from 'storybook-addon-styled-component-theme';
+import { GlobalStyles } from '../src/GlobalStyles';
+import { withThemesProvider } from 'storybook-addon-styled-component-theme';
 import defaultTheme from '../src/themes/default';
 import darkTheme from '../src/themes/dark';
 
@@ -11,14 +11,14 @@ function loadStories() {
   req.keys().forEach(filename => req(filename));
 }
 
-const StoryWrapper = (storyFn) => {
+const StoryWrapper = storyFn => {
   return (
     <>
       <GlobalStyles />
       {storyFn()}
     </>
-  )
-}
+  );
+};
 
 addDecorator(StoryWrapper);
 addDecorator(withThemesProvider([defaultTheme, darkTheme]));

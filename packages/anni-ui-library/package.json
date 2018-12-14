@@ -4,12 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "start-storybook -p 9001 -c .storybook",
-    "deploy": "storybook-to-ghpages",
+    "build": "npm run generate-component-index && rollup -c rollup.config.js",
+    "deploy-storybook": "storybook-to-ghpages",
+    "generate-component-index": "node generate-index",
     "precommit": "lint-staged && npm test",
-    "test": "jest",
-    "build": "rollup -c config.js",
-    "release": "npm run build && np"
+    "publish": "npm run build && np",
+    "postpublish": "npm run deploy",
+    "start": "start-storybook -p 9001 -c .storybook",
+    "test": "jest"
   },
   "lint-staged": {
     "src/**/*.{js,jsx,json}": [
@@ -27,10 +29,12 @@
     "styled-components": "^4.1.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.1.6",
+    "@babel/core": "^7.2.0",
+    "@babel/preset-env": "^7.2.0",
+    "@babel/preset-react": "^7.0.0",
     "@storybook/addon-actions": "^4.0.7",
-    "@storybook/react": "^4.1.0-alpha.3",
-    "@storybook/storybook-deployer": "^2.3.0",
+    "@storybook/react": "^4.1.1",
+    "@storybook/storybook-deployer": "^2.8.1",
     "babel-core": "^7.0.0-bridge.0",
     "babel-eslint": "^10.0.1",
     "babel-jest": "^23.6.0",
@@ -48,14 +52,15 @@
     "eslint-plugin-react": "^7.11.1",
     "husky": "^1.1.4",
     "jest": "^23.6.0",
+    "jest-prop-type-error": "^1.1.0",
     "jest-styled-components": "^6.3.1",
     "lint-staged": "^8.0.5",
     "np": "^3.0.4",
     "prettier": "^1.15.2",
+    "prop-types": "^15.6.2",
     "react-test-renderer": "^16.6.3",
     "rollup": "^0.67.3",
     "rollup-plugin-babel": "^4.0.3",
-    "rollup-plugin-jsx": "^1.0.3",
     "rollup-plugin-node-resolve": "^3.4.0",
     "rollup-plugin-uglify": "^6.0.0",
     "rollup-plugin-url": "^2.1.0",

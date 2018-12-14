@@ -39,3 +39,5 @@ export const GlobalStyles = createGlobalStyle`
     background-color: ${props => props.theme.bgA};
   }
 `;
+
+export default GlobalStyles;

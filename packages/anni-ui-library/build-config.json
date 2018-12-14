@@ -1,0 +1,5 @@
+{
+  "components": ["AnniUILibraryProvider", "Button", "ButtonGroup", "Wrapper"],
+  "componentsPath": "./components",
+  "mainFile": "./src/index.js"
+}
