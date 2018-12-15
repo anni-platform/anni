@@ -1,34 +1,50 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 
 export const messages = {
   projectNameLabel: 'Project name',
   projectNamePlaceholder: 'Project B',
   noProjects: 'No projects',
   createProject: 'Create project',
-  removeProject: 'Remove Project',
+  removeProject: 'Remove project',
+  removeProjectAriaLabel: 'Remove {name} project',
+  errorProjectNameTaken: 'Sorry, that project name is already taken.',
 };
 
-function ProjectCard({name, removeProject}) {
+export const generateRemoveButtonAriaLabel = name =>
+  messages.removeProjectAriaLabel.replace(/\{.*?\}/, name);
+
+function ProjectCard({ name, removeProject }) {
   return (
     <div>
       <h3>{name}</h3>
-      <button onClick={() => removeProject(name)}>
+      <button
+        aria-label={generateRemoveButtonAriaLabel(name)}
+        onClick={() => removeProject(name)}
+      >
         {messages.removeProject}
       </button>
     </div>
   );
 }
 
-function ProjectForm({addProject}) {
+const projectNameErrorId = 'projectNameErrorId';
+function ProjectForm({ addProject, validateProject }) {
   const [value, setValue] = useState('');
+  const [projectNameError, setProjectNameError] = useState(null);
 
   const handleSubmit = e => {
     e.preventDefault();
     if (!value) return;
-    addProject({
+    const projectData = {
       name: value,
-    });
-    setValue('');
+    };
+    const validationResult = validateProject(projectData);
+    if (validationResult === null) {
+      addProject(projectData);
+      setValue('');
+    } else {
+      setProjectNameError(validationResult);
+    }
   };
 
   return (
@@ -36,14 +52,24 @@ function ProjectForm({addProject}) {
       <label htmlFor="projectName">
         {messages.projectNameLabel}
         <input
+          aria-describedby={projectNameError && projectNameErrorId}
+          aria-invalid={!!projectNameError ? true : null}
           id="projectName"
           type="text"
           className="input"
           placeholder={messages.projectNamePlaceholder}
           value={value}
-          onChange={e => setValue(e.target.value)}
+          onChange={e => {
+            setProjectNameError(null);
+            setValue(e.target.value);
+          }}
         />
       </label>
+      {projectNameError && (
+        <p style={{ color: 'magenta' }} id={projectNameErrorId}>
+          {projectNameError.message}
+        </p>
+      )}
       <button type="submit">{messages.createProject}</button>
     </form>
   );
@@ -61,12 +87,21 @@ const demoProjects = [
   },
 ];
 
-export default function Dashboard({defaultProjects = demoProjects}) {
+export default function Dashboard({ defaultProjects = demoProjects }) {
   const [projects, setProjects] = useState(defaultProjects);
 
   const addProject = project => setProjects([...projects, project]);
   const removeProject = name =>
     setProjects(projects.filter(project => project.name !== name));
+
+  function validateProject({ name }) {
+    if (projects.find(p => p.name === name)) {
+      return {
+        message: messages.errorProjectNameTaken,
+      };
+    }
+    return null;
+  }
 
   return (
     <div>
@@ -79,7 +114,7 @@ export default function Dashboard({defaultProjects = demoProjects}) {
           removeProject={removeProject}
         />
       ))}
-      <ProjectForm addProject={addProject} />
+      <ProjectForm addProject={addProject} validateProject={validateProject} />
     </div>
   );
 }

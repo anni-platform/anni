@@ -1,18 +1,21 @@
 import React from 'react';
-import {render, fireEvent, waitForElement} from 'react-testing-library';
-import Dashboard, {messages} from './Dashboard';
+import { render, fireEvent, waitForElement } from 'react-testing-library';
+import Dashboard, {
+  messages,
+  generateRemoveButtonAriaLabel,
+} from './Dashboard';
 
 test('no projects state', () => {
-  const {container, getByLabelText, getByText} = render(
+  const { container, getByLabelText, getByText } = render(
     <Dashboard defaultProjects={[]} />
   );
   expect(container).toContainElement(getByText(messages.noProjects));
   expect(container).toContainElement(getByLabelText(messages.projectNameLabel));
 });
 
-test('add a new project', () => {
+test('add the only project', () => {
   const newProjectName = 'Ai!';
-  const {container, getByLabelText, getByText, queryByText} = render(
+  const { container, getByLabelText, getByText, queryByText } = render(
     <Dashboard defaultProjects={[]} />
   );
   // Given a project form
@@ -22,7 +25,7 @@ test('add a new project', () => {
 
   // When I enter a project name and click the submit button
   fireEvent.change(projectName, {
-    target: {value: newProjectName},
+    target: { value: newProjectName },
   });
   fireEvent.click(getByText(messages.createProject));
 
@@ -33,8 +36,8 @@ test('add a new project', () => {
 
 test('removing the only project', () => {
   const projectName = 'Apple';
-  const {container, getByLabelText, getByText, queryByText} = render(
-    <Dashboard defaultProjects={[{name: projectName}]} />
+  const { container, getByLabelText, getByText, queryByText } = render(
+    <Dashboard defaultProjects={[{ name: projectName }]} />
   );
 
   expect(container).toContainElement(queryByText(projectName));
@@ -43,4 +46,91 @@ test('removing the only project', () => {
   fireEvent.click(queryByText(messages.removeProject));
   expect(container).toContainElement(queryByText(messages.noProjects));
   expect(container).not.toContainElement(queryByText(projectName));
+});
+
+test('add a project', () => {
+  const existingProjectName = 'Foo';
+  const newProjectName = 'Ai!';
+  const { container, getByLabelText, getByText, queryByText } = render(
+    <Dashboard defaultProjects={[{ name: existingProjectName }]} />
+  );
+  // Given a project form
+  const projectName = getByLabelText(messages.projectNameLabel);
+
+  expect(container).not.toContainElement(queryByText(newProjectName));
+
+  // When I enter a project name and click the submit button
+  fireEvent.change(projectName, {
+    target: { value: newProjectName },
+  });
+  fireEvent.click(getByText(messages.createProject));
+
+  // The project is created and renders in the list
+  expect(container).toContainElement(queryByText(existingProjectName));
+  expect(container).toContainElement(queryByText(newProjectName));
+});
+
+test('removing a project', () => {
+  const projectName = 'Apple';
+  const n1 = 'Bert';
+  const n2 = 'Ernie';
+  const { container, getByLabelText, getByText, queryByText } = render(
+    <Dashboard
+      defaultProjects={[{ name: n1 }, { name: projectName }, { name: n2 }]}
+    />
+  );
+
+  expect(container).toContainElement(queryByText(projectName));
+
+  fireEvent.click(getByLabelText(generateRemoveButtonAriaLabel(projectName)));
+
+  expect(container).not.toContainElement(queryByText(projectName));
+  expect(container).toContainElement(queryByText(n1));
+  expect(container).toContainElement(queryByText(n2));
+});
+
+test('adding a project name that already exists', () => {
+  const projectName = 'Apple';
+  const validProjectName = 'Risotto Party';
+  const {
+    container,
+    getByLabelText,
+    getByText,
+    queryByText,
+    queryAllByText,
+  } = render(<Dashboard defaultProjects={[{ name: projectName }]} />);
+
+  const projectNameField = getByLabelText(messages.projectNameLabel);
+
+  // When I enter the same project name and click the submit button
+  fireEvent.change(projectNameField, {
+    target: { value: projectName },
+  });
+  fireEvent.click(getByText(messages.createProject));
+
+  // I should see an error explaining the project name is already taken
+  expect(queryAllByText(projectName)).toHaveLength(1);
+  expect(projectNameField).toHaveAttribute('aria-invalid');
+  expect(container).toContainElement(
+    queryByText(messages.errorProjectNameTaken)
+  );
+  expect(projectNameField).toHaveAttribute('aria-describedby');
+
+  // The invalid input value remains the same
+  expect(projectNameField.value).toEqual(projectName);
+
+  // Then when I edit the project name so it is valid the error should clear
+  fireEvent.change(projectNameField, {
+    target: { value: validProjectName },
+  });
+  expect(projectNameField).not.toHaveAttribute('aria-invalid');
+  expect(container).not.toContainElement(
+    queryByText(messages.errorProjectNameTaken)
+  );
+  expect(projectNameField).not.toHaveAttribute('aria-describedby');
+
+  // And when I click the create project button it saves and clears the form
+  fireEvent.click(getByText(messages.createProject));
+  expect(projectNameField.value).toEqual('');
+  expect(container).toContainElement(queryByText(validProjectName));
 });
