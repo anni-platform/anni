@@ -16,14 +16,14 @@ export default function App({ defaultProjects = demoProjects }) {
         Anni Project Manager Application
         <ul>
           <li>
-            <Link to="/">Home</Link>
+            <Link to="">Home</Link>
           </li>
           <li>
             <Link to="dashboard">Dashboard</Link>
           </li>
         </ul>
       </header>
-      <Router>
+      <Router basePath={process.env.PUBLIC_URL}>
         <Home path="/" />
         <Dashboard
           path="dashboard"
