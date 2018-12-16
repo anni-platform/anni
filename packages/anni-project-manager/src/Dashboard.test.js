@@ -1,13 +1,18 @@
-import React from 'react';
-import { render, fireEvent, waitForElement } from 'react-testing-library';
+import React, { useState } from 'react';
+import { render, fireEvent } from 'react-testing-library';
 import Dashboard, {
   messages,
   generateRemoveButtonAriaLabel,
 } from './Dashboard';
 
+function DashboardWithState({ defaultProjects }) {
+  const [projects, setProjects] = useState(defaultProjects);
+  return <Dashboard projects={projects} setProjects={setProjects} />;
+}
+
 test('no projects state', () => {
   const { container, getByLabelText, getByText } = render(
-    <Dashboard defaultProjects={[]} />
+    <DashboardWithState defaultProjects={[]} />
   );
   expect(container).toContainElement(getByText(messages.noProjects));
   expect(container).toContainElement(getByLabelText(messages.projectNameLabel));
@@ -16,7 +21,7 @@ test('no projects state', () => {
 test('add the only project', () => {
   const newProjectName = 'Ai!';
   const { container, getByLabelText, getByText, queryByText } = render(
-    <Dashboard defaultProjects={[]} />
+    <DashboardWithState defaultProjects={[]} />
   );
   // Given a project form
   const projectName = getByLabelText(messages.projectNameLabel);
@@ -37,7 +42,7 @@ test('add the only project', () => {
 test('removing the only project', () => {
   const projectName = 'Apple';
   const { container, getByLabelText, getByText, queryByText } = render(
-    <Dashboard defaultProjects={[{ name: projectName }]} />
+    <DashboardWithState defaultProjects={[{ name: projectName }]} />
   );
 
   expect(container).toContainElement(queryByText(projectName));
@@ -52,7 +57,7 @@ test('add a project', () => {
   const existingProjectName = 'Foo';
   const newProjectName = 'Ai!';
   const { container, getByLabelText, getByText, queryByText } = render(
-    <Dashboard defaultProjects={[{ name: existingProjectName }]} />
+    <DashboardWithState defaultProjects={[{ name: existingProjectName }]} />
   );
   // Given a project form
   const projectName = getByLabelText(messages.projectNameLabel);
@@ -75,7 +80,7 @@ test('removing a project', () => {
   const n1 = 'Bert';
   const n2 = 'Ernie';
   const { container, getByLabelText, getByText, queryByText } = render(
-    <Dashboard
+    <DashboardWithState
       defaultProjects={[{ name: n1 }, { name: projectName }, { name: n2 }]}
     />
   );
@@ -98,7 +103,7 @@ test('adding a project name that already exists', () => {
     getByText,
     queryByText,
     queryAllByText,
-  } = render(<Dashboard defaultProjects={[{ name: projectName }]} />);
+  } = render(<DashboardWithState defaultProjects={[{ name: projectName }]} />);
 
   const projectNameField = getByLabelText(messages.projectNameLabel);
 

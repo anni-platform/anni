@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { Link } from '@reach/router';
+import slugify from '@sindresorhus/slugify';
 
 export const messages = {
   projectNameLabel: 'Project name',
@@ -13,10 +15,12 @@ export const messages = {
 export const generateRemoveButtonAriaLabel = name =>
   messages.removeProjectAriaLabel.replace(/\{.*?\}/, name);
 
-function ProjectCard({ name, removeProject }) {
+function ProjectCard({ id, name, removeProject }) {
   return (
     <div>
-      <h3>{name}</h3>
+      <h3>
+        <Link to={`/${id}`}>{name}</Link>
+      </h3>
       <button
         aria-label={generateRemoveButtonAriaLabel(name)}
         onClick={() => removeProject(name)}
@@ -36,6 +40,7 @@ function ProjectForm({ addProject, validateProject }) {
     e.preventDefault();
     if (!value) return;
     const projectData = {
+      id: slugify(value),
       name: value,
     };
     const validationResult = validateProject(projectData);
@@ -75,21 +80,7 @@ function ProjectForm({ addProject, validateProject }) {
   );
 }
 
-const demoProjects = [
-  {
-    name: 'Project A',
-  },
-  {
-    name: 'Project B',
-  },
-  {
-    name: 'Project C',
-  },
-];
-
-export default function Dashboard({ defaultProjects = demoProjects }) {
-  const [projects, setProjects] = useState(defaultProjects);
-
+export default function Dashboard({ projects, setProjects }) {
   const addProject = project => setProjects([...projects, project]);
   const removeProject = name =>
     setProjects(projects.filter(project => project.name !== name));
