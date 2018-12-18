@@ -5,6 +5,7 @@ import NotFound from 'NotFound';
 import { Router, Link } from '@reach/router';
 import { projects as demoProjects } from 'test/fixtures.json';
 import { makeRoutePath } from 'utils/routing';
+import 'App.css';
 
 const Home = () => <div>Home</div>;
 
@@ -12,7 +13,7 @@ export default function App({ defaultProjects = demoProjects }) {
   const [projects, setProjects] = useState(defaultProjects);
 
   return (
-    <div>
+    <div className="App">
       <header>
         Anni Project Manager Application
         <ul>
