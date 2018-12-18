@@ -4,6 +4,7 @@ import Project from 'Project';
 import NotFound from 'NotFound';
 import { Router, Link } from '@reach/router';
 import { projects as demoProjects } from 'test/fixtures.json';
+import { makeRoutePath } from 'utils/routing';
 
 const Home = () => <div>Home</div>;
 
@@ -16,21 +17,21 @@ export default function App({ defaultProjects = demoProjects }) {
         Anni Project Manager Application
         <ul>
           <li>
-            <Link to="">Home</Link>
+            <Link to={makeRoutePath('/')}>Home</Link>
           </li>
           <li>
-            <Link to="dashboard">Dashboard</Link>
+            <Link to={makeRoutePath('dashboard')}>Dashboard</Link>
           </li>
         </ul>
       </header>
-      <Router basePath={process.env.PUBLIC_URL}>
-        <Home path="/" />
+      <Router>
+        <Home path={makeRoutePath('/')} />
         <Dashboard
-          path="dashboard"
+          path={makeRoutePath('dashboard')}
           projects={projects}
           setProjects={setProjects}
         />
-        <Project path=":projectId" projects={projects} />
+        <Project path={makeRoutePath(':projectId')} projects={projects} />
         <NotFound default />
       </Router>
     </div>

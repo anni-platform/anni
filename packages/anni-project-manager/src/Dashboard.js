@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from '@reach/router';
 import slugify from '@sindresorhus/slugify';
+import { makeRoutePath } from 'utils/routing';
 
 export const messages = {
   projectNameLabel: 'Project name',
@@ -19,7 +20,7 @@ function ProjectCard({ id, name, removeProject }) {
   return (
     <div>
       <h3>
-        <Link to={`/${id}`}>{name}</Link>
+        <Link to={makeRoutePath(id)}>{name}</Link>
       </h3>
       <button
         aria-label={generateRemoveButtonAriaLabel(name)}

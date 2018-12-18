@@ -2,7 +2,7 @@
   "name": "anni-project-manager-application",
   "version": "0.1.0",
   "private": true,
-  "homepage": "http://anni.io/project-manager-application",
+  "homepage": "https://anni.io/project-manager-application",
   "dependencies": {
     "@reach/router": "^1.2.1",
     "@sindresorhus/slugify": "^0.6.0",
@@ -12,7 +12,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "react-scripts build && cp build/index.html build/404.html",
     "test": "react-scripts test --env=jsdom",
     "test:coverage": "react-scripts test --env=jsdom --coverage",
     "test:staged": "CI=true react-scripts test --env=jsdom --findRelatedTests",
