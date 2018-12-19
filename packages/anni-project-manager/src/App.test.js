@@ -1,10 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App, { demoProjects } from 'App';
-import { fireEvent } from 'react-testing-library';
+import App from 'App';
 import { renderWithLocation } from 'test/utils';
 import { messages as notFoundMessages } from 'NotFound';
-import { projects } from 'test/fixtures.json';
+import { projects } from 'test/fixtures';
 
 test('renders without crashing', () => {
   const div = document.createElement('div');

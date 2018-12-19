@@ -3,7 +3,7 @@ import Dashboard from 'Dashboard';
 import Project from 'Project';
 import NotFound from 'NotFound';
 import { Router, Link } from '@reach/router';
-import { projects as demoProjects } from 'test/fixtures.json';
+import { projects as demoProjects } from 'test/fixtures';
 import { makeRoutePath } from 'utils/routing';
 import 'App.css';
 
@@ -32,7 +32,7 @@ export default function App({ defaultProjects = demoProjects }) {
           projects={projects}
           setProjects={setProjects}
         />
-        <Project path={makeRoutePath(':projectId')} projects={projects} />
+        <Project path={makeRoutePath(':projectId/*')} projects={projects} />
         <NotFound default />
       </Router>
     </div>
