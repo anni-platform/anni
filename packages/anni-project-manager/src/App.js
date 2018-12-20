@@ -12,6 +12,20 @@ const Home = () => <div>Home</div>;
 export default function App({ defaultProjects = demoProjects }) {
   const [projects, setProjects] = useState(defaultProjects);
 
+  function updateProject(projectUpdate) {
+    setProjects(
+      projects.map(project => {
+        if (project.id === projectUpdate.id) {
+          return {
+            ...project,
+            ...projectUpdate,
+          };
+        }
+        return project;
+      })
+    );
+  }
+
   return (
     <div className="App">
       <header>
@@ -32,7 +46,11 @@ export default function App({ defaultProjects = demoProjects }) {
           projects={projects}
           setProjects={setProjects}
         />
-        <Project path={makeRoutePath(':projectId/*')} projects={projects} />
+        <Project
+          path={makeRoutePath(':projectId/*')}
+          projects={projects}
+          updateProject={updateProject}
+        />
         <NotFound default />
       </Router>
     </div>
