@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import slugify from '@sindresorhus/slugify';
 
 export const TYPE_IMAGE_COLLECTION = 'imageCollection';
@@ -13,6 +14,34 @@ export const DEFAULT_MOOD_BOARD_NAME = 'Mood board';
 export const DEFAULT_STORY_BOARD_NAME = 'Story board';
 export const DEFAULT_STYLE_FRAMES_NAME = 'Style frames';
 export const DEFAULT_MOTION_NAME = 'Animation';
+
+export const projectSectionTypes = PropTypes.oneOf([
+  TYPE_IMAGE_COLLECTION,
+  TYPE_PROSE,
+  TYPE_MOTION,
+]);
+
+export const projectSectionSubTypes = PropTypes.oneOf([
+  SUBTYPE_MOOD_BOARD,
+  SUBTYPE_STORY_BOARD,
+  SUBTYPE_STYLE_FRAMES,
+]);
+
+export const projectSectionShape = PropTypes.shape({
+  id: PropTypes.string,
+  name: PropTypes.string,
+  type: projectSectionTypes.isRequired,
+  subtype: projectSectionSubTypes,
+});
+
+export const projectShape = PropTypes.shape({
+  name: PropTypes.string,
+  sections: PropTypes.arrayOf(projectSectionShape),
+});
+
+export const projectMessages = {
+  overviewLink: 'Overview',
+};
 
 export const PROJECT_SECTIONS_DEFAULT = [
   {

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Dashboard from 'Dashboard';
-import Project from 'Project';
+import Project from 'project';
 import NotFound from 'NotFound';
 import { Router, Link } from '@reach/router';
 import { projects as demoProjects } from 'test/fixtures';
