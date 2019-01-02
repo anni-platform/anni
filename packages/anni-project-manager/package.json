@@ -15,10 +15,11 @@
     "build": "react-scripts build && cp build/index.html build/404.html",
     "test": "react-scripts test --env=jsdom",
     "test:coverage": "react-scripts test --env=jsdom --coverage",
+    "test:build": "CI=true react-scripts test --env=jsdom",
     "test:staged": "CI=true react-scripts test --env=jsdom --findRelatedTests",
     "eject": "react-scripts eject",
     "precommit": "lint-staged",
-    "predeploy": "npm run build",
+    "predeploy": "npm run test:build && npm run build",
     "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
