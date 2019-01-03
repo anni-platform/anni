@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import difference from 'lodash/difference';
 import {
   SortableContainer,
   SortableElement,
@@ -42,6 +43,13 @@ export default function SortableDragHandleList({
   ...restProps
 }) {
   const [items, setItems] = useState(defaultItems);
+
+  useEffect(() => {
+    const newItems = difference(defaultItems, items);
+    if (newItems.length > 0) {
+      setItems([...items, ...newItems]);
+    }
+  });
 
   const onSortEnd = ({ oldIndex, newIndex }) => {
     const newItems = arrayMove(items, oldIndex, newIndex);

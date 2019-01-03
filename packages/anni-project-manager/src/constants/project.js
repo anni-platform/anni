@@ -9,23 +9,42 @@ export const SUBTYPE_MOOD_BOARD = 'moodBoard';
 export const SUBTYPE_STORY_BOARD = 'storyBoard';
 export const SUBTYPE_STYLE_FRAMES = 'styleFrames';
 
+export const SECTION_TYPES = [TYPE_IMAGE_COLLECTION, TYPE_PROSE, TYPE_MOTION];
+export const SECTION_SUB_TYPES = [
+  SUBTYPE_MOOD_BOARD,
+  SUBTYPE_STORY_BOARD,
+  SUBTYPE_STYLE_FRAMES,
+];
+export const SECTION_CONFIG = {
+  [TYPE_PROSE]: TYPE_PROSE,
+  [TYPE_MOTION]: TYPE_MOTION,
+  [TYPE_IMAGE_COLLECTION]: [
+    SUBTYPE_MOOD_BOARD,
+    SUBTYPE_STORY_BOARD,
+    SUBTYPE_STYLE_FRAMES,
+  ],
+};
+
 export const DEFAULT_PROSE_NAME = 'Script';
 export const DEFAULT_MOOD_BOARD_NAME = 'Mood board';
 export const DEFAULT_STORY_BOARD_NAME = 'Story board';
 export const DEFAULT_STYLE_FRAMES_NAME = 'Style frames';
 export const DEFAULT_MOTION_NAME = 'Animation';
 
-export const projectSectionTypes = PropTypes.oneOf([
-  TYPE_IMAGE_COLLECTION,
-  TYPE_PROSE,
-  TYPE_MOTION,
-]);
+export const SECTION_TYPE_NAMES = {
+  [TYPE_IMAGE_COLLECTION]: 'Image collection',
+  [TYPE_PROSE]: DEFAULT_PROSE_NAME,
+  [TYPE_MOTION]: DEFAULT_MOTION_NAME,
+};
 
-export const projectSectionSubTypes = PropTypes.oneOf([
-  SUBTYPE_MOOD_BOARD,
-  SUBTYPE_STORY_BOARD,
-  SUBTYPE_STYLE_FRAMES,
-]);
+export const SECTION_SUB_TYPE_NAMES = {
+  [SUBTYPE_MOOD_BOARD]: DEFAULT_MOOD_BOARD_NAME,
+  [SUBTYPE_STORY_BOARD]: DEFAULT_STORY_BOARD_NAME,
+  [SUBTYPE_STYLE_FRAMES]: DEFAULT_STYLE_FRAMES_NAME,
+};
+
+export const projectSectionTypes = PropTypes.oneOf(SECTION_TYPES);
+export const projectSectionSubTypes = PropTypes.oneOf(SECTION_SUB_TYPES);
 
 export const projectSectionShape = PropTypes.shape({
   id: PropTypes.string,

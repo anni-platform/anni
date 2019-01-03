@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { projectShape } from 'constants/project';
 import SortableList from 'shared/SortableList';
-// import ProjectSectionForm from 'project/ProjectSectionForm';
+import ProjectSectionForm from 'project/ProjectSectionForm';
 
 const messages = {
   cancel: 'Cancel',
@@ -27,7 +27,7 @@ export default function ProjectSettings({
         onReorder={sections => updateProjectState({ ...project, sections })}
         renderItem={({ name }) => <strong>{name}</strong>}
       />
-      {/* @todo: <ProjectSectionForm
+      <ProjectSectionForm
         project={projectState}
         saveNewSection={newSection => {
           updateProjectState({
@@ -35,7 +35,7 @@ export default function ProjectSettings({
             sections: [...sections, newSection],
           });
         }}
-      /> */}
+      />
       <button onClick={saveChanges}>{messages.saveChanges}</button>
       <button onClick={toggleEditing}>{messages.cancel}</button>
     </div>
