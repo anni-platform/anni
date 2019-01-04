@@ -26,13 +26,14 @@ export const SECTION_CONFIG = {
 };
 
 export const DEFAULT_PROSE_NAME = 'Script';
+export const DEFAULT_IMAGE_COLLECTION_NAME = 'Image collection';
 export const DEFAULT_MOOD_BOARD_NAME = 'Mood board';
 export const DEFAULT_STORY_BOARD_NAME = 'Story board';
 export const DEFAULT_STYLE_FRAMES_NAME = 'Style frames';
 export const DEFAULT_MOTION_NAME = 'Animation';
 
 export const SECTION_TYPE_NAMES = {
-  [TYPE_IMAGE_COLLECTION]: 'Image collection',
+  [TYPE_IMAGE_COLLECTION]: DEFAULT_IMAGE_COLLECTION_NAME,
   [TYPE_PROSE]: DEFAULT_PROSE_NAME,
   [TYPE_MOTION]: DEFAULT_MOTION_NAME,
 };

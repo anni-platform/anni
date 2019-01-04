@@ -16,13 +16,15 @@ export const messages = {
   saveNewProjectSectionButtonLabel: 'Add new project section',
 };
 
-const NAME_SECTION_TYPE = 'type';
-const NAME_SECTION_SUB_TYPE = 'subtype';
+export const NAME_SECTION_TYPE = 'type';
+export const NAME_SECTION_SUB_TYPE = 'subtype';
+export const DEFAULT_TYPE = TYPE_IMAGE_COLLECTION;
+export const DEFAULT_SUB_TYPE = SUBTYPE_MOOD_BOARD;
 
 const initialState = {
   name: '',
-  type: TYPE_IMAGE_COLLECTION,
-  subtype: SUBTYPE_MOOD_BOARD,
+  type: DEFAULT_TYPE,
+  subtype: DEFAULT_SUB_TYPE,
 };
 
 const isTypeSelected = (type, state) => type === state.type;
@@ -33,8 +35,13 @@ const reducer = (oldState, newState) => ({ ...oldState, ...newState });
 export default function ProjectSectionForm({ saveNewSection }) {
   const [state, setState] = useReducer(reducer, initialState);
   const setName = name => setState({ name });
-  const setType = type => setState({ type });
   const setSubType = subtype => setState({ subtype });
+  const setType = type => {
+    setState({ type });
+    setSubType(
+      Array.isArray(SECTION_CONFIG[type]) ? SECTION_CONFIG[type][0] : null
+    );
+  };
   function onSubmit(e) {
     e.preventDefault();
     saveNewSection({ ...state, id: slugify(state.name) });

@@ -45,7 +45,7 @@
     "reselect": "^4.0.0"
   },
   "lint-staged": {
-    "*/*.{js,jsx,json}": [
+    "src/**/*.{js,jsx,json}": [
       "npm run test:staged",
       "eslint --fix",
       "git add"
