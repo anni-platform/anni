@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { projectShape } from 'constants/project';
+import { projectShape } from 'shared';
 import SortableList from 'shared/SortableList';
 import ProjectSectionForm from 'project/ProjectSectionForm';
 

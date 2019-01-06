@@ -16,7 +16,7 @@ import {
   SUBTYPE_STYLE_FRAMES,
   SUBTYPE_MOOD_BOARD,
   DEFAULT_IMAGE_COLLECTION_NAME,
-} from 'constants/project';
+} from 'shared';
 
 test('create a new section with a name and defaults', () => {
   const saveNewSection = jest.fn();

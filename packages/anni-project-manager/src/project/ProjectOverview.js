@@ -1,6 +1,6 @@
 import React from 'react';
 import { PROJECT_SECTION } from 'test/ids';
-import { projectShape } from 'constants/project';
+import { projectShape } from 'shared';
 
 export default function ProjectOverview({ project }) {
   return (

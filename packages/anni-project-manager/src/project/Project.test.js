@@ -11,7 +11,7 @@ import {
   SUBTYPE_MOOD_BOARD,
   SUBTYPE_STORY_BOARD,
   SUBTYPE_STYLE_FRAMES,
-} from 'constants/project';
+} from 'shared';
 
 test('renders a project overview by default', () => {
   const [project] = projects;

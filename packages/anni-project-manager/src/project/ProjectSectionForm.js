@@ -8,7 +8,7 @@ import {
   SECTION_SUB_TYPE_NAMES,
   TYPE_IMAGE_COLLECTION,
   SUBTYPE_MOOD_BOARD,
-} from 'constants/project';
+} from 'shared';
 
 export const messages = {
   newProjectSectionNameLabel: 'New project section name',

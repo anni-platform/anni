@@ -93,3 +93,11 @@ export const PROJECT_SECTIONS_DEFAULT = [
     type: TYPE_MOTION,
   },
 ];
+
+export function createProjectWithDefaults(name) {
+  return {
+    id: slugify(name),
+    name,
+    sections: PROJECT_SECTIONS_DEFAULT,
+  };
+}

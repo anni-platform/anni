@@ -1,4 +1,4 @@
-import { PROJECT_SECTIONS_DEFAULT } from 'constants/project';
+import { PROJECT_SECTIONS_DEFAULT } from 'shared';
 
 export const projects = 'abce'.split('').map(p => ({
   id: `project-${p}`,

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from '@reach/router';
-import slugify from '@sindresorhus/slugify';
 import { makeRoutePath } from 'utils/routing';
+import { createProjectWithDefaults } from 'shared';
 
 export const messages = {
   projectNameLabel: 'Project name',
@@ -40,10 +40,7 @@ function ProjectForm({ addProject, validateProject }) {
   const handleSubmit = e => {
     e.preventDefault();
     if (!value) return;
-    const projectData = {
-      id: slugify(value),
-      name: value,
-    };
+    const projectData = createProjectWithDefaults(value);
     const validationResult = validateProject(projectData);
     if (validationResult === null) {
       addProject(projectData);

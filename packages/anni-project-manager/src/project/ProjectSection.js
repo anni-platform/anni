@@ -4,7 +4,7 @@ import {
   projectSectionTypes,
   projectSectionSubTypes,
   projectShape,
-} from 'constants/project';
+} from 'shared';
 import { PROJECT_SECTION } from 'test/ids';
 
 export default function ProjectSection({ name, project, subtype, type }) {

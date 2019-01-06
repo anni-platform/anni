@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import { render, fireEvent } from 'react-testing-library';
-import Dashboard, {
-  messages,
-  generateRemoveButtonAriaLabel,
-} from './Dashboard';
+import { createProjectWithDefaults } from 'shared';
+import Dashboard, { messages, generateRemoveButtonAriaLabel } from '.';
 
 function DashboardWithState({ defaultProjects }) {
   const [projects, setProjects] = useState(defaultProjects);
@@ -18,30 +16,50 @@ test('no projects state', () => {
   expect(container).toContainElement(getByLabelText(messages.projectNameLabel));
 });
 
-test('add the only project', () => {
-  const newProjectName = 'Ai!';
-  const { container, getByLabelText, getByText, queryByText } = render(
-    <DashboardWithState defaultProjects={[]} />
-  );
+function createOnlyProject(
+  name,
+  { container, getByLabelText, queryByText, getByText }
+) {
   // Given a project form
   const projectName = getByLabelText(messages.projectNameLabel);
 
-  expect(container).not.toContainElement(queryByText(newProjectName));
+  expect(container).not.toContainElement(queryByText(name));
 
   // When I enter a project name and click the submit button
   fireEvent.change(projectName, {
-    target: { value: newProjectName },
+    target: { value: name },
   });
   fireEvent.click(getByText(messages.createProject));
+}
+
+test('add the only project', () => {
+  const newProjectName = 'Ai!';
+  const renderResult = render(<DashboardWithState defaultProjects={[]} />);
+  const { container, queryByText } = renderResult;
+
+  createOnlyProject(newProjectName, renderResult);
 
   // The project is created and renders in the list
   expect(container).not.toContainElement(queryByText(messages.noProjects));
   expect(container).toContainElement(queryByText(newProjectName));
 });
 
+test('addProject payload', () => {
+  const newProjectName = 'Czechoslovakia';
+  const setProjects = jest.fn();
+  const renderResult = render(
+    <Dashboard projects={[]} setProjects={setProjects} />
+  );
+  createOnlyProject(newProjectName, renderResult);
+  expect(setProjects).toHaveBeenCalledTimes(1);
+  expect(setProjects).toHaveBeenCalledWith([
+    createProjectWithDefaults(newProjectName),
+  ]);
+});
+
 test('removing the only project', () => {
   const projectName = 'Apple';
-  const { container, getByLabelText, getByText, queryByText } = render(
+  const { container, queryByText } = render(
     <DashboardWithState defaultProjects={[{ name: projectName }]} />
   );
 

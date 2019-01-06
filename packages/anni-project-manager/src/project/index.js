@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { createSelector } from 'reselect';
 import { Router, Link } from '@reach/router';
 import { PROJECT_SECTION_NAV } from 'test/ids';
-import { projectMessages } from 'constants/project';
+import { projectMessages } from 'shared';
 import NotFound from 'NotFound';
 import ProjectSection from 'project/ProjectSection';
 import ProjectOverview from 'project/ProjectOverview';
