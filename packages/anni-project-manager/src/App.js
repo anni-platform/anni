@@ -34,7 +34,6 @@ export default function App({ defaultProjects = demoProjects }) {
 
   useEffect(() => {
     if (!isEqual(lastProjectsState, projects)) {
-      console.log('new change saving');
       saveProjects(projects);
       lastProjectsState = projects;
     }
