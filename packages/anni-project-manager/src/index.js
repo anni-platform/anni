@@ -1,28 +1,23 @@
-import React, { Suspense } from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
-import { unstable_createResource as createResource } from 'react-cache';
 import { getProjects } from 'shared';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
 const rootEl = document.getElementById('root');
-
-const projectsResource = createResource(getProjects);
-
 const Loader = () => <div>Loading...</div>;
 
-function Application() {
-  const projects = projectsResource.read();
-  return <App defaultProjects={projects} />;
-}
-
 function ApplicationLoader() {
-  return (
-    <Suspense fallback={<Loader />}>
-      <Application />
-    </Suspense>
-  );
+  const [projects, setProjects] = useState(null);
+  useEffect(() => {
+    getProjects().then(setProjects);
+  });
+
+  if (!projects) {
+    return <Loader />;
+  }
+  return <App defaultProjects={projects} />;
 }
 
 ReactDOM.render(<ApplicationLoader />, rootEl);
