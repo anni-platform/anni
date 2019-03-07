@@ -6,15 +6,50 @@ import NotFound from 'NotFound';
 import { Router, Link } from '@reach/router';
 import { projects as demoProjects } from 'test/fixtures';
 import { makeRoutePath } from 'utils/routing';
-import { saveProjects } from 'shared';
+import Loader from 'shared/Loader';
+import { saveProjects, useDropboxClient } from 'shared';
 import 'App.css';
 
 const Home = () => <div>Home</div>;
 
 let lastProjectsState;
 
+function AccountNav() {
+  const { client, authUrl, logout } = useDropboxClient();
+  const [userInfo, setUserInfo] = useState(null);
+
+  useEffect(() => {
+    if (client) {
+      client.usersGetCurrentAccount().then(setUserInfo);
+    }
+  }, []);
+
+  if (!client) {
+    return <a href={authUrl}>Login to Dropbox</a>;
+  }
+
+  return userInfo ? (
+    <div>
+      <div>
+        <h2>{userInfo.name.familiar_name}</h2>
+        <img
+          style={{ borderRadius: '50%' }}
+          with={50}
+          height={50}
+          src={userInfo.profile_photo_url}
+          alt={userInfo.name.display_name}
+        />
+        <button onClick={logout}>Logout</button>
+      </div>
+    </div>
+  ) : (
+    <Loader />
+  );
+}
+
 export default function App({ defaultProjects = demoProjects }) {
   const [debugState, setDebugState] = useState(false);
+  const { updateDatabase } = useDropboxClient();
   lastProjectsState = defaultProjects;
   const [projects, setProjects] = useState(defaultProjects);
 
@@ -35,6 +70,7 @@ export default function App({ defaultProjects = demoProjects }) {
   useEffect(() => {
     if (!isEqual(lastProjectsState, projects)) {
       saveProjects(projects);
+      updateDatabase({ data: { projects } });
       lastProjectsState = projects;
     }
   });
@@ -49,6 +85,9 @@ export default function App({ defaultProjects = demoProjects }) {
           </li>
           <li>
             <Link to={makeRoutePath('dashboard')}>Dashboard</Link>
+          </li>
+          <li>
+            <AccountNav />
           </li>
         </ul>
       </header>

@@ -1,5 +1,9 @@
+import { useState, useEffect } from 'react';
+import isEqual from 'lodash/isEqual';
+import localForage from 'localforage';
 import PropTypes from 'prop-types';
 import slugify from '@sindresorhus/slugify';
+import { useDropboxClient } from '.';
 
 export const TYPE_IMAGE_COLLECTION = 'imageCollection';
 export const TYPE_PROSE = 'prose';
@@ -99,5 +103,62 @@ export function createProjectWithDefaults(name) {
     id: slugify(name),
     name,
     sections: PROJECT_SECTIONS_DEFAULT,
+  };
+}
+
+const NAMESPACE = 'anni-pma-';
+const prefixKey = key => `${NAMESPACE}${key}`;
+const PROJECTS_STORE_KEY = prefixKey('projects');
+const DEFAULT_PROJECTS_STORE = [];
+
+export const getProjects = async () => {
+  try {
+    const store = await localForage.getItem(PROJECTS_STORE_KEY);
+    if (!store) {
+      await localForage.setItem(PROJECTS_STORE_KEY, DEFAULT_PROJECTS_STORE);
+      return DEFAULT_PROJECTS_STORE;
+    }
+    return store;
+  } catch (e) {}
+};
+
+export function saveProjects(projects) {
+  if (projects) {
+    return localForage.setItem(PROJECTS_STORE_KEY, projects);
+  }
+}
+
+function updateProjectById(projects, projectUpdate) {
+  return projects.map(project => {
+    if (project.id === projectUpdate.id) {
+      return {
+        ...project,
+        ...projectUpdate,
+      };
+    }
+    return project;
+  });
+}
+
+let lastProjectsState;
+
+export function useProjectManager(defaultProjects) {
+  const { updateDatabase } = useDropboxClient();
+  const [projects, setProjects] = useState(defaultProjects);
+
+  function updateProject(projectUpdate) {
+    setProjects(updateProjectById(projectUpdate));
+  }
+
+  useEffect(() => {
+    if (!isEqual(lastProjectsState, projects)) {
+      saveProjects(projects);
+      updateDatabase({ data: { projects } });
+      lastProjectsState = projects;
+    }
+  });
+
+  return {
+    updateProject,
   };
 }
