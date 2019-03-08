@@ -1,7 +1,6 @@
 import createDropboxProvider from 'dbdbdb-provider';
 import { homepage } from '../../package.json';
 export * from './project';
-
 const authRedirect =
   process.env.NODE_ENV === 'production' ? homepage : undefined;
 

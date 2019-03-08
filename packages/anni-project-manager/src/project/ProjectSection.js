@@ -4,16 +4,32 @@ import {
   projectSectionTypes,
   projectSectionSubTypes,
   projectShape,
+  TYPE_PROSE,
 } from 'shared';
 import { PROJECT_SECTION } from 'test/ids';
+import ProseSection from './sections/Prose';
 
-export default function ProjectSection({ name, project, subtype, type }) {
+function renderSectionContent(type, props) {
+  switch (type) {
+    case TYPE_PROSE:
+      return <ProseSection {...props} />;
+    default:
+      return <div>Section content pending for type: {type}</div>;
+  }
+}
+
+export default function ProjectSection({ updateProjectSection, ...restProps }) {
+  const { id, name, project, subtype, type } = restProps;
+  const props = {
+    ...restProps,
+    save: update => updateProjectSection(project.id, id, update),
+  };
   return (
     <div data-testid={PROJECT_SECTION}>
       <h1>
         {project.name} - {name}
       </h1>
-      {type}
+      {renderSectionContent(type, props)}
       {subtype && ` - ${subtype}`}
     </div>
   );

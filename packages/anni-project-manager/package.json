@@ -7,6 +7,9 @@
     "@reach/router": "^1.2.1",
     "@sindresorhus/slugify": "^0.6.0",
     "dbdbdb-provider": "0.0.3",
+    "draft-js": "^0.10.5",
+    "draft-js-counter-plugin": "^2.0.1",
+    "draft-js-plugins-editor": "^2.1.1",
     "localforage": "^1.7.3",
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
@@ -34,6 +37,7 @@
     "not op_mini all"
   ],
   "devDependencies": {
+    "classnames": "^2.2.6",
     "eslint-config-prettier": "^3.3.0",
     "eslint-plugin-prettier": "^3.0.0",
     "gh-pages": "^2.0.1",

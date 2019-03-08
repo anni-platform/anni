@@ -90,6 +90,27 @@ export default function App({ defaultProjects = demoProjects }) {
     );
   }
 
+  function updateProjectSection(projectId, sectionId, update) {
+    const project = projects.find(({ id }) => id === projectId);
+    const section = project.sections.find(s => s.id === sectionId);
+    if (project && section) {
+      console.log('project', project);
+      console.log('updateProjectSection', projectId, sectionId, section);
+      updateProject({
+        ...project,
+        sections: project.sections.map(section => {
+          delete section.editorContent;
+          return section.id === sectionId
+            ? {
+                ...section,
+                ...update,
+              }
+            : section;
+        }),
+      });
+    }
+  }
+
   useEffect(() => {
     if (client && !isEqual(lastProjectsState, projects)) {
       saveProjects(projects);
@@ -127,6 +148,7 @@ export default function App({ defaultProjects = demoProjects }) {
           path={makeRoutePath(':projectId/*')}
           projects={projects}
           updateProject={updateProject}
+          updateProjectSection={updateProjectSection}
         />
         <NotFound default />
       </Router>
