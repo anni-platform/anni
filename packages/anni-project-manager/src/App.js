@@ -10,16 +10,25 @@ import Loader from 'shared/Loader';
 import { saveProjects, useDropboxClient } from 'shared';
 import 'App.css';
 
+const HOME_PATH = makeRoutePath('/');
 const Home = () => <div>Home</div>;
 
 let lastProjectsState;
 
-function AccountNav() {
-  const { client, authUrl, logout } = useDropboxClient();
+function removeHash() {
+  window.history.pushState(
+    '',
+    document.title,
+    window.location.pathname + window.location.search
+  );
+}
+
+function AccountNav({ client, authUrl, logout }) {
   const [userInfo, setUserInfo] = useState(null);
 
   useEffect(() => {
     if (client) {
+      removeHash();
       client.usersGetCurrentAccount().then(setUserInfo);
     }
   }, []);
@@ -49,9 +58,20 @@ function AccountNav() {
 
 export default function App({ defaultProjects = demoProjects }) {
   const [debugState, setDebugState] = useState(false);
-  const { updateDatabase } = useDropboxClient();
+  const db = useDropboxClient();
+  const { client, updateDatabase } = db;
   lastProjectsState = defaultProjects;
   const [projects, setProjects] = useState(defaultProjects);
+
+  useEffect(
+    () => {
+      if (!client) {
+        // navigate(HOME_PATH);
+        window.location.href = window.location.origin;
+      }
+    },
+    [client]
+  );
 
   function updateProject(projectUpdate) {
     setProjects(
@@ -68,7 +88,7 @@ export default function App({ defaultProjects = demoProjects }) {
   }
 
   useEffect(() => {
-    if (!isEqual(lastProjectsState, projects)) {
+    if (client && !isEqual(lastProjectsState, projects)) {
       saveProjects(projects);
       updateDatabase({ data: { projects } });
       lastProjectsState = projects;
@@ -81,13 +101,15 @@ export default function App({ defaultProjects = demoProjects }) {
         Anni Project Manager Application
         <ul>
           <li>
-            <Link to={makeRoutePath('/')}>Home</Link>
+            <Link to={HOME_PATH}>Home</Link>
           </li>
+          {client && (
+            <li>
+              <Link to={makeRoutePath('dashboard')}>Dashboard</Link>
+            </li>
+          )}
           <li>
-            <Link to={makeRoutePath('dashboard')}>Dashboard</Link>
-          </li>
-          <li>
-            <AccountNav />
+            <AccountNav {...db} />
           </li>
         </ul>
       </header>

@@ -38,7 +38,7 @@ function ApplicationLoader() {
         }
       });
     }
-  });
+  }, []);
 
   if (!client) {
     return <LandingPage />;
