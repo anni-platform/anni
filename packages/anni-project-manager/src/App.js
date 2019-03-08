@@ -7,6 +7,7 @@ import { Router, Link } from '@reach/router';
 import { projects as demoProjects } from 'test/fixtures';
 import { makeRoutePath } from 'utils/routing';
 import Loader from 'shared/Loader';
+import { homepage } from '../package.json';
 import { saveProjects, useDropboxClient } from 'shared';
 import 'App.css';
 
@@ -66,8 +67,10 @@ export default function App({ defaultProjects = demoProjects }) {
   useEffect(
     () => {
       if (!client) {
-        // navigate(HOME_PATH);
-        window.location.href = window.location.origin;
+        window.location.href =
+          process.env.NODE_ENV === 'production'
+            ? homepage
+            : window.location.origin;
       }
     },
     [client]
