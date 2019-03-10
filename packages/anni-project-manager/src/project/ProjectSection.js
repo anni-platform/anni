@@ -5,14 +5,18 @@ import {
   projectSectionSubTypes,
   projectShape,
   TYPE_PROSE,
+  TYPE_IMAGE_COLLECTION,
 } from 'shared';
 import { PROJECT_SECTION } from 'test/ids';
 import ProseSection from './sections/Prose';
+import ImageCollection from './sections/ImageCollection';
 
 function renderSectionContent(type, props) {
   switch (type) {
     case TYPE_PROSE:
       return <ProseSection {...props} />;
+    case TYPE_IMAGE_COLLECTION:
+      return <ImageCollection {...props} />;
     default:
       return <div>Section content pending for type: {type}</div>;
   }
