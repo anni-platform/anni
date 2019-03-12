@@ -25,7 +25,8 @@
     "eject": "react-scripts eject",
     "precommit": "lint-staged",
     "predeploy": "npm run test:build && npm run build",
-    "deploy": "gh-pages -d build"
+    "deploy": "gh-pages -d build",
+    "storybook": "start-storybook"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -37,6 +38,7 @@
     "not op_mini all"
   ],
   "devDependencies": {
+    "@storybook/react": "^5.0.1",
     "classnames": "^2.2.6",
     "eslint-config-prettier": "^3.3.0",
     "eslint-plugin-prettier": "^3.0.0",
