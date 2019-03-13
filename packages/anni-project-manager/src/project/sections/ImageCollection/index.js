@@ -22,19 +22,72 @@ const listStyle = {
 
 const INPUT_ID = 'imageCollectionUploadInput';
 
+function useFileDrop(initialState) {
+  const [isFileDropActive, setIsActive] = useState(initialState);
+
+  return { isFileDropActive, setIsActive };
+}
+
+function FilesDropZone({ children, onDrop }) {
+  const { isFileDropActive, setIsActive } = useFileDrop(false);
+  function dropHandler(ev) {
+    ev.preventDefault();
+
+    // Prevent default behavior (Prevent file from being opened)
+    ev.preventDefault();
+
+    let files;
+
+    if (ev.dataTransfer.items) {
+      files = [...ev.dataTransfer.items]
+        .filter(({ kind }) => kind === 'file')
+        .map(f => f.getAsFile());
+    } else {
+      files = [...ev.dataTransfer.files];
+    }
+
+    if (files) {
+      onDrop(files);
+    }
+  }
+
+  return (
+    <div
+      onDropCapture={dropHandler}
+      onDragOverCapture={e => {
+        e.preventDefault();
+        setIsActive(true);
+      }}
+      onDragLeaveCapture={() => setIsActive(false)}
+      style={{
+        padding: 8,
+        background: isFileDropActive ? 'MediumSpringGreen' : 'transparent',
+      }}
+    >
+      {children}
+    </div>
+  );
+}
+
 export default function ImageCollection({ defaultCollection = [] }) {
   const [collection, setCollection] = useState(defaultCollection);
-  function onUploadImage({ target }) {
-    const { files } = target;
-    const uploadedImages = [...files].map(f => ({
+  const { isFileDropActive } = useFileDrop();
+
+  function addFilesToCollection(files) {
+    const imagesToUpload = files.map(f => ({
       file: f,
       preview: URL.createObjectURL && URL.createObjectURL(f),
     }));
-
-    setCollection([...collection, ...uploadedImages]);
+    setCollection([...collection, ...imagesToUpload]);
   }
+
+  function onUploadImage({ target }) {
+    const { files } = target;
+    addFilesToCollection([...files]);
+  }
+
   return (
-    <div>
+    <FilesDropZone onDrop={addFilesToCollection}>
       {collection.length > 0 ? (
         <SortableList
           axis="xy"
@@ -46,15 +99,18 @@ export default function ImageCollection({ defaultCollection = [] }) {
       ) : (
         <p>No images.</p>
       )}
-      <label htmlFor={INPUT_ID}>Upload image</label>
+      <label htmlFor={INPUT_ID}>
+        Upload image {isFileDropActive && 'ACTIVE!'}
+      </label>
       <input
         id={INPUT_ID}
         name={INPUT_ID}
         type="file"
         accept="image/png, image/jpeg"
+        multiple
         onChange={onUploadImage}
       />
-    </div>
+    </FilesDropZone>
   );
 }
 
