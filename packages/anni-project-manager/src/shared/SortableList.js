@@ -65,6 +65,15 @@ export default function SortableDragHandleList({
     }
   });
 
+  useEffect(
+    () => {
+      if (defaultItems !== items) {
+        setItems(defaultItems);
+      }
+    },
+    [defaultItems]
+  );
+
   const onSortEnd = ({ oldIndex, newIndex }) => {
     const newItems = arrayMove(items, oldIndex, newIndex);
     onReorder(newItems);

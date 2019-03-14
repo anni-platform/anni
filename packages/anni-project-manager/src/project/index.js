@@ -18,7 +18,7 @@ const getProjectbyId = createSelector(
 export default function Project(props) {
   const [isEditingSections, setEditingSections] = useState(false);
   const project = getProjectbyId(props);
-  const { updateProject, updateProjectSection } = props;
+  const { updateProject, updateProjectSection, uploadImage } = props;
 
   if (!project) return <NotFound />;
 
@@ -58,6 +58,7 @@ export default function Project(props) {
             path={section.id}
             project={project}
             updateProjectSection={updateProjectSection}
+            uploadImage={uploadImage}
             {...section}
           />
         ))}

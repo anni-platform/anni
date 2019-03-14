@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import uniqueId from 'lodash/uniqueId';
 import PropTypes from 'prop-types';
 import SortableList from 'shared/SortableList';
 
@@ -69,21 +70,68 @@ function FilesDropZone({ children, onDrop }) {
   );
 }
 
-export default function ImageCollection({ defaultCollection = [] }) {
-  const [collection, setCollection] = useState(defaultCollection);
+async function uploadNewFiles({ newFiles, collection, uploadImage }) {
+  const newUploads = await Promise.all(
+    newFiles.map(({ file }) => uploadImage({ file }))
+  );
+  const idToUrlMap = newUploads.reduce(
+    (acc, { url }, index) => ({
+      ...acc,
+      [newFiles[index].id]: url,
+    }),
+    {}
+  );
+
+  return collection.map(item => {
+    const remoteUrl = idToUrlMap[item.id];
+    if (remoteUrl) {
+      return {
+        ...item,
+        url: remoteUrl,
+        uploaded: true,
+      };
+    } else {
+      return item;
+    }
+  });
+}
+
+export default function ImageCollection(props) {
+  const { collection: defaultCollection, save } = props;
+  const [collection, setCollection] = useState(defaultCollection || []);
   const { isFileDropActive } = useFileDrop();
 
+  const handleNewUploads =
+    // This is a bummer, but testing async useEffect is tricky rn
+    // https://github.com/threepointone/react-act-examples
+    process.env.NODE_ENV !== 'test'
+      ? () => {
+          const newFiles = collection.filter(f => !f.uploaded);
+          if (newFiles.length) {
+            uploadNewFiles({
+              ...props,
+              collection,
+              newFiles,
+            }).then(setCollection);
+          }
+        }
+      : () => {};
+
+  useEffect(handleNewUploads, [collection]);
+
   function addFilesToCollection(files) {
-    const imagesToUpload = files.map(f => ({
-      file: f,
-      preview: URL.createObjectURL && URL.createObjectURL(f),
+    const imagesToUpload = files.map(file => ({
+      id: uniqueId(file.name),
+      name: file.name,
+      file,
+      preview: URL.createObjectURL && URL.createObjectURL(file),
+      uploaded: false,
     }));
     setCollection([...collection, ...imagesToUpload]);
   }
 
   function onUploadImage({ target }) {
-    const { files } = target;
-    addFilesToCollection([...files]);
+    addFilesToCollection([...target.files]);
   }
 
   return (
@@ -110,6 +158,7 @@ export default function ImageCollection({ defaultCollection = [] }) {
         multiple
         onChange={onUploadImage}
       />
+      <button onClick={() => save({ collection })}>Save</button>
     </FilesDropZone>
   );
 }
@@ -122,4 +171,10 @@ ImageCollection.propTypes = {
       description: PropTypes.string,
     })
   ),
+  uploadImage: PropTypes.func.isRequired,
+  save: PropTypes.func,
+};
+
+ImageCollection.defaultProps = {
+  uploadImage: console.log,
 };

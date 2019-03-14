@@ -1,21 +1,26 @@
 import React from 'react';
-import { fireEvent, render } from 'react-testing-library';
+import { fireEvent, render, act } from 'react-testing-library';
 import ImageCollection from '.';
 
 describe('ImageCollection', () => {
-  it('renders an empty state', () => {
-    const { getByText } = render(<ImageCollection defaultCollection={[]} />);
+  it('renders a sensible zero state', () => {
+    let renderResult;
+
+    act(() => {
+      renderResult = render(<ImageCollection defaultCollection={[]} />);
+    });
+
+    const { getByText } = renderResult;
 
     expect(getByText(/No images/)).toBeInTheDocument();
     expect(getByText(/Upload image/)).toBeInTheDocument();
   });
 
-  it('provides a means to upload an image file', () => {
+  it('provides controls to upload an image file', async () => {
     const { getByLabelText, container } = render(
       <ImageCollection defaultCollection={[]} />
     );
     const inputEl = getByLabelText(/Upload image/i);
-
     const file = new File(['🐈'], 'cat.png', {
       type: 'image/png',
     });

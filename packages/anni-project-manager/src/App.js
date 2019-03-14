@@ -60,7 +60,7 @@ function AccountNav({ client, authUrl, logout }) {
 export default function App({ defaultProjects = demoProjects }) {
   const [debugState, setDebugState] = useState(false);
   const db = useDropboxClient();
-  const { client, updateDatabase } = db;
+  const { client, updateDatabase, uploadImage } = db;
   lastProjectsState = defaultProjects;
   const [projects, setProjects] = useState(defaultProjects);
 
@@ -94,8 +94,6 @@ export default function App({ defaultProjects = demoProjects }) {
     const project = projects.find(({ id }) => id === projectId);
     const section = project.sections.find(s => s.id === sectionId);
     if (project && section) {
-      console.log('project', project);
-      console.log('updateProjectSection', projectId, sectionId, section);
       updateProject({
         ...project,
         sections: project.sections.map(section => {
@@ -149,6 +147,7 @@ export default function App({ defaultProjects = demoProjects }) {
           projects={projects}
           updateProject={updateProject}
           updateProjectSection={updateProjectSection}
+          uploadImage={uploadImage}
         />
         <NotFound default />
       </Router>
