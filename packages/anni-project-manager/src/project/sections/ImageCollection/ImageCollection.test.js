@@ -1,16 +1,10 @@
 import React from 'react';
-import { fireEvent, render, act } from 'react-testing-library';
+import { fireEvent, render } from 'react-testing-library';
 import ImageCollection from '.';
 
 describe('ImageCollection', () => {
   it('renders a sensible zero state', () => {
-    let renderResult;
-
-    act(() => {
-      renderResult = render(<ImageCollection defaultCollection={[]} />);
-    });
-
-    const { getByText } = renderResult;
+    const { getByText } = render(<ImageCollection defaultCollection={[]} />);
 
     expect(getByText(/No images/)).toBeInTheDocument();
     expect(getByText(/Upload image/)).toBeInTheDocument();

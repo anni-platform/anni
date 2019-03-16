@@ -1,19 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import uniqueId from 'lodash/uniqueId';
+import isEqual from 'lodash/isEqual';
 import PropTypes from 'prop-types';
 import SortableList from 'shared/SortableList';
 
-function renderImageItem({ file, url, preview, title, description }) {
-  return (
-    <figure style={{ maxWidth: 300, position: 'relative' }}>
-      <img
-        src={url || preview}
-        alt={title || description || (file && file.name)}
-        style={{ maxWidth: '100%', height: 'auto' }}
-      />
-      <figcaption>{description}</figcaption>
-    </figure>
-  );
+function generateRenderItem({ removeFile }) {
+  return function({ file, id, url, preview, title, description }) {
+    return (
+      <figure style={{ maxWidth: 300, position: 'relative' }}>
+        <img
+          src={url || preview}
+          alt={title || description || (file && file.name)}
+          style={{ maxWidth: '100%', height: 'auto' }}
+        />
+        <figcaption>{description}</figcaption>
+        <button onClick={() => removeFile(id)}>× delete</button>
+      </figure>
+    );
+  };
 }
 
 const listStyle = {
@@ -70,7 +74,7 @@ function FilesDropZone({ children, onDrop }) {
   );
 }
 
-async function uploadNewFiles({ newFiles, collection, uploadImage }) {
+async function uploadNewFiles({ newFiles, collection, save, uploadImage }) {
   const newUploads = await Promise.all(
     newFiles.map(({ file }) => uploadImage({ file }))
   );
@@ -82,7 +86,7 @@ async function uploadNewFiles({ newFiles, collection, uploadImage }) {
     {}
   );
 
-  return collection.map(item => {
+  const nextCollection = collection.map(item => {
     const remoteUrl = idToUrlMap[item.id];
     if (remoteUrl) {
       return {
@@ -94,30 +98,36 @@ async function uploadNewFiles({ newFiles, collection, uploadImage }) {
       return item;
     }
   });
+
+  save({ collection: nextCollection });
 }
 
 export default function ImageCollection(props) {
   const { collection: defaultCollection, save } = props;
   const [collection, setCollection] = useState(defaultCollection || []);
+  const [isSaving, setIsSaving] = useState(false);
+  const [error, setError] = useState(null);
+  const [isPendingChanges, setIsPendingChanges] = useState(false);
   const { isFileDropActive } = useFileDrop();
 
-  const handleNewUploads =
-    // This is a bummer, but testing async useEffect is tricky rn
-    // https://github.com/threepointone/react-act-examples
-    process.env.NODE_ENV !== 'test'
-      ? () => {
-          const newFiles = collection.filter(f => !f.uploaded);
-          if (newFiles.length) {
-            uploadNewFiles({
-              ...props,
-              collection,
-              newFiles,
-            }).then(setCollection);
-          }
-        }
-      : () => {};
+  const checkIfPendingChanges = nextCollection => {
+    const isPending = !isEqual(defaultCollection, nextCollection || collection);
+    setIsPendingChanges(isPending);
+    return isPending;
+  };
 
-  useEffect(handleNewUploads, [collection]);
+  const updateCollection = newCollection => {
+    if (newCollection && checkIfPendingChanges(newCollection)) {
+      setCollection(newCollection);
+    }
+  };
+
+  useEffect(
+    () => {
+      updateCollection(defaultCollection);
+    },
+    [defaultCollection]
+  );
 
   function addFilesToCollection(files) {
     const imagesToUpload = files.map(file => ({
@@ -127,11 +137,33 @@ export default function ImageCollection(props) {
       preview: URL.createObjectURL && URL.createObjectURL(file),
       uploaded: false,
     }));
-    setCollection([...collection, ...imagesToUpload]);
+    updateCollection([...collection, ...imagesToUpload]);
+  }
+
+  function removeFile(id) {
+    updateCollection(collection.filter(i => i.id !== id));
   }
 
   function onUploadImage({ target }) {
     addFilesToCollection([...target.files]);
+  }
+
+  async function saveCollection() {
+    setError(null);
+    const newFiles = collection.filter(f => !f.uploaded);
+
+    if (newFiles.length) {
+      setIsSaving(true);
+      await uploadNewFiles({
+        ...props,
+        collection,
+        newFiles,
+        save,
+      }).catch(setError);
+      setIsSaving(false);
+    } else if (!isEqual(defaultCollection, collection)) {
+      save({ collection });
+    }
   }
 
   return (
@@ -141,8 +173,8 @@ export default function ImageCollection(props) {
           axis="xy"
           defaultItems={collection}
           listStyle={listStyle}
-          onReorder={setCollection}
-          renderItem={renderImageItem}
+          onReorder={updateCollection}
+          renderItem={generateRenderItem({ removeFile })}
         />
       ) : (
         <p>No images.</p>
@@ -158,7 +190,14 @@ export default function ImageCollection(props) {
         multiple
         onChange={onUploadImage}
       />
-      <button onClick={() => save({ collection })}>Save</button>
+      {isSaving ? (
+        'Saving...'
+      ) : (
+        <button disabled={!isPendingChanges} onClick={saveCollection}>
+          Save
+        </button>
+      )}
+      {error && <p style={{ color: 'red' }}>{error.message}</p>}
     </FilesDropZone>
   );
 }
