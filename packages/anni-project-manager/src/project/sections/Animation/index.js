@@ -68,7 +68,7 @@ function useListFolderFiles(folder, onReceiveFolderFiles) {
         const sortedFiles = files.sort((a, b) => a.index - b.index);
         setItems(sortedFiles);
       }
-      listFiles();
+      if (folder) listFiles();
     },
     [folder]
   );
@@ -113,19 +113,22 @@ export default function AnimationSection({
         onSelectFolder={selectedFolder =>
           updateSettings({ selectedFolder, files: null })
         }
-        selectedFolderId={selectedFolder.id || defaultSelectedFolder}
+        selectedFolderId={
+          selectedFolder ? selectedFolder.id : defaultSelectedFolder
+        }
       />
-      {selectedFolder && files === null ? (
-        <Loader />
-      ) : (
-        <ul style={{ display: 'flex', flexWrap: 'wrap', listStyle: 'none' }}>
-          {files.map(f => (
-            <li key={f.id}>
-              <img src={f.url} width={100} alt={f.name} />
-            </li>
-          ))}
-        </ul>
-      )}
+      {selectedFolder &&
+        (Array.isArray(files) ? (
+          <ul style={{ display: 'flex', flexWrap: 'wrap', listStyle: 'none' }}>
+            {files.map(f => (
+              <li key={f.id}>
+                <img src={f.url} width={100} alt={f.name} />
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <Loader />
+        ))}
       <button
         disabled={isSaveDisabled}
         onClick={() => save(settings)}
