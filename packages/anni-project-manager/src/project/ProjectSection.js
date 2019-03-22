@@ -6,10 +6,12 @@ import {
   projectShape,
   TYPE_PROSE,
   TYPE_IMAGE_COLLECTION,
+  TYPE_MOTION,
 } from 'shared';
 import { PROJECT_SECTION } from 'test/ids';
 import ProseSection from './sections/Prose';
 import ImageCollection from './sections/ImageCollection';
+import Animation from './sections/Animation';
 
 function renderSectionContent(type, props) {
   switch (type) {
@@ -17,6 +19,8 @@ function renderSectionContent(type, props) {
       return <ProseSection {...props} />;
     case TYPE_IMAGE_COLLECTION:
       return <ImageCollection {...props} />;
+    case TYPE_MOTION:
+      return <Animation {...props} />;
     default:
       return <div>Section content pending for type: {type}</div>;
   }
