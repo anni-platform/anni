@@ -1,17 +1,20 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
-import { Button } from './Button';
+import { Button, NakedButton } from './Button';
+import { OutlineIcon } from '../Icon/Icon';
 
-storiesOf('Controls/Button', module)
+storiesOf('Form/Buttons', module)
   .add('default', () => (
     <Button onClick={action('clicked')}>Default Button</Button>
   ))
   .add('primary', () => (
     <Button onClick={action('clicked')} primary>
       Primary Button
-      <span role="img" aria-label="Cool Icon">
-        😎
-      </span>
     </Button>
+  ))
+  .add('naked', () => (
+    <NakedButton onClick={action('clicked')}>
+      <OutlineIcon name="logo" />
+    </NakedButton>
   ));

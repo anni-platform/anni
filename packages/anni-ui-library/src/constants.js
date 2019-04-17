@@ -1,17 +1,4 @@
-/*
- * Colors
- */
-
-export const COPPER = '#E2A480';
-export const HAZEL = '#FFE5CA';
-
-export const CARMINE = '#F2596B';
-
-export const CHARCOAL = '#1B1D1E';
-export const CONCRETE = '#A1A5AA';
-export const FLINT = '#E0E3E8';
-export const PEBBLE = '#FBFBFB';
-export const PAPER = '#FFFFFF';
+import { css } from 'styled-components';
 
 /*
  * Easing
@@ -29,3 +16,15 @@ export const breakpointSizes = {
   md: 960,
   sm: 570,
 };
+
+/*
+ * Media Templates
+ */
+export const Above = Object.keys(breakpointSizes).reduce((acc, label) => {
+  acc[label] = (...args) => css`
+    @media (min-width: ${breakpointSizes[label] / 16}em) {
+      ${css(...args)};
+    }
+  `;
+  return acc;
+}, {});

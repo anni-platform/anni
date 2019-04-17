@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import utils from '../utils';
-import { EASE_OUT_EXPO } from '../constants';
+import utils from '../../utils';
+import { EASE_OUT_EXPO } from '../../constants';
 
 export const Button = styled.button`
   align-items: center;
@@ -44,20 +44,15 @@ export const Button = styled.button`
       transform: scale(1);
     }
   }
+`;
 
-  svg {
-    ${utils.padding};
-    fill: ${props => (props.fill ? props.theme.textPrimary : 'transparent')};
-    height: ${props => (props.iconSize ? `${props.iconSize}px` : '18px')};
-    margin-right: ${props => (props.stacked ? '0' : '6px')};
-    margin-bottom: ${props => (props.stacked ? '6px' : '0')};
-    stroke: ${props =>
-      props.fill ? 'transparent' : `${props.theme.textPrimary}`};
-    stroke: ${props => props.stacked && `${props.theme.textPrimary}`};
-    stroke-width: ${props =>
-      props.strokeWidth ? `${props.strokeWidth}px` : '6px'};
-    stroke-width: ${props => props.fill && '6px'};
-    transition: 400ms ${EASE_OUT_EXPO};
-    width: ${props => (props.iconSize ? `${props.iconSize}px` : '18px')};
+export const NakedButton = styled(Button)`
+  background: none;
+  border: none;
+  display: flex;
+  flex-direction: column;
+
+  span {
+    margin: 4px 0 0 0;
   }
 `;

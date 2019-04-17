@@ -1,19 +1,19 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
-import { Button } from './Button';
-import { ButtonGroup } from './ButtonGroup';
+import { Button } from '../Button/Button';
+import { Group } from './Group';
 
-storiesOf('Controls/ButtonGroup', module)
+storiesOf('Form/Group', module)
   .add('default', () => (
-    <ButtonGroup>
+    <Group>
       <Button onClick={action('clicked')}>Button A</Button>
       <Button onClick={action('clicked')}>Button B</Button>
-    </ButtonGroup>
+    </Group>
   ))
   .add('center', () => (
-    <ButtonGroup center>
+    <Group center>
       <Button onClick={action('clicked')}>Button A</Button>
       <Button onClick={action('clicked')}>Button B</Button>
-    </ButtonGroup>
+    </Group>
   ));

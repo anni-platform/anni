@@ -1,7 +1,7 @@
 import styled from 'styled-components';
-import utils from '../utils';
+import utils from '../../utils';
 
-export const ButtonGroup = styled.div`
+export const Group = styled.div`
   ${utils.margin};
   display: flex;
   justify-content: ${props => (props.center ? 'center' : 'flex-start')};

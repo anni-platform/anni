@@ -2,14 +2,14 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 
 import { Wrapper } from './Wrapper';
-import { Button } from './Button';
-import { ButtonGroup } from './ButtonGroup';
+import { Button } from '../Button/Button';
+import { Group } from '../Group/Group';
 
 storiesOf('Layout/Wrapper', module).add('default', () => (
   <Wrapper>
-    <ButtonGroup>
+    <Group>
       <Button>Button A</Button>
       <Button>Button B</Button>
-    </ButtonGroup>
+    </Group>
   </Wrapper>
 ));

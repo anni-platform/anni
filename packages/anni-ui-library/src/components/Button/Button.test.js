@@ -1,7 +1,7 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
 import { Button } from './Button';
-import defaultTheme from '../themes/default';
+import defaultTheme from '../../themes/default';
 
 test('Button default', () => {
   expect(
