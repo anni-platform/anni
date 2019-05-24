@@ -12,12 +12,12 @@
     "draft-js-counter-plugin": "^2.0.1",
     "draft-js-plugins-editor": "^2.1.1",
     "localforage": "^1.7.3",
-    "react": "^16.8.4",
-    "react-dom": "^16.8.4",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
     "react-scripts": "^2.1.8"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "HTTPS=true react-scripts start",
     "build": "react-scripts build && cp build/index.html build/404.html",
     "test": "react-scripts test --env=jsdom",
     "test:coverage": "react-scripts test --env=jsdom --coverage",
@@ -27,7 +27,8 @@
     "precommit": "lint-staged",
     "predeploy": "npm run test:build && npm run build",
     "deploy": "gh-pages -d build",
-    "storybook": "start-storybook"
+    "storybook": "start-storybook",
+    "test:integration": "jest -c integration/jest.config.js"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -39,16 +40,18 @@
     "not op_mini all"
   ],
   "devDependencies": {
-    "@storybook/react": "^5.0.1",
+    "@storybook/react": "^5.0.11",
     "classnames": "^2.2.6",
     "eslint-config-prettier": "^3.3.0",
     "eslint-plugin-prettier": "^3.0.0",
     "gh-pages": "^2.0.1",
     "husky": "^1.2.1",
     "jest-dom": "^3.0.0",
+    "jest-puppeteer": "^4.1.1",
     "lint-staged": "^8.1.0",
     "lodash": "^4.17.11",
     "prettier": "^1.15.3",
+    "puppeteer": "^1.17.0",
     "react-sortable-hoc": "^0.8.4",
     "react-testing-library": "^5.9.0",
     "reselect": "^4.0.0"
