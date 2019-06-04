@@ -73,7 +73,9 @@ function ProjectForm({ addProject, validateProject }) {
           {projectNameError.message}
         </p>
       )}
-      <button type="submit">{messages.createProject}</button>
+      <button type="submit" id="create-project-form-button">
+        {messages.createProject}
+      </button>
     </form>
   );
 }
@@ -93,7 +95,7 @@ export default function Dashboard({ projects, setProjects }) {
   }
 
   return (
-    <div>
+    <div id="dashboard-screen">
       <h2>Projects</h2>
       {projects.length === 0 && <p>{messages.noProjects}</p>}
       {projects.map(project => (

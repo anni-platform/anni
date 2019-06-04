@@ -1,8 +1,8 @@
 module.exports = {
   server: {
-    command: `npm start`,
-    port: 3000,
-    launchTimeout: 20000,
+    command: `npm run server:integ`,
+    port: 8080,
+    launchTimeout: 30000,
     debug: true,
   },
 };

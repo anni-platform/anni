@@ -2,12 +2,11 @@
   "name": "anni-project-manager-application",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://anni.io/project-manager-application",
   "dependencies": {
     "@reach/router": "^1.2.1",
     "@sindresorhus/slugify": "^0.6.0",
     "canvas-image-scrubber": "^1.1.9",
-    "dbdbdb-provider": "0.0.3",
+    "dbdbdb-provider": "^0.0.4",
     "draft-js": "^0.10.5",
     "draft-js-counter-plugin": "^2.0.1",
     "draft-js-plugins-editor": "^2.1.1",
@@ -19,6 +18,7 @@
   "scripts": {
     "start": "HTTPS=true react-scripts start",
     "build": "react-scripts build && cp build/index.html build/404.html",
+    "build:production": "PUBLIC_URL=https://anni.io/project-manager-application npm run build",
     "test": "react-scripts test --env=jsdom",
     "test:coverage": "react-scripts test --env=jsdom --coverage",
     "test:build": "CI=true react-scripts test --env=jsdom",
@@ -28,7 +28,11 @@
     "predeploy": "npm run test:build && npm run build",
     "deploy": "gh-pages -d build",
     "storybook": "start-storybook",
-    "test:integration": "jest -c integration/jest.config.js"
+    "pretest:integ": "REACT_APP_INTEG_TEST=1 react-scripts build && cp build/index.html build/404.html",
+    "test:integ": "npm run test:integ-only",
+    "test:integ-only": "REACT_APP_INTEG_TEST=1 jest -c integration/jest.config.js",
+    "preserver:integ": "rimraf integration/screenshots/*",
+    "server:integ": "REACT_APP_INTEG_TEST=1 serve -d build -l 8080"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -54,7 +58,9 @@
     "puppeteer": "^1.17.0",
     "react-sortable-hoc": "^0.8.4",
     "react-testing-library": "^5.9.0",
-    "reselect": "^4.0.0"
+    "reselect": "^4.0.0",
+    "rimraf": "^2.6.3",
+    "serve": "^11.0.1"
   },
   "lint-staged": {
     "src/**/*.{js,jsx,json}": [

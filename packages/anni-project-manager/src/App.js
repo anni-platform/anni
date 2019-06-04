@@ -7,7 +7,6 @@ import { Router, Link } from '@reach/router';
 import { projects as demoProjects } from 'test/fixtures';
 import { makeRoutePath } from 'utils/routing';
 import Loader from 'shared/Loader';
-import { homepage } from '../package.json';
 import { saveProjects, useDropboxClient } from 'shared';
 import 'App.css';
 
@@ -69,7 +68,7 @@ export default function App({ defaultProjects = demoProjects }) {
       if (!client) {
         window.location.href =
           process.env.NODE_ENV === 'production'
-            ? homepage
+            ? process.env.PUBLIC_URL
             : window.location.origin;
       }
     },
@@ -118,7 +117,7 @@ export default function App({ defaultProjects = demoProjects }) {
   });
 
   return (
-    <div className="App">
+    <div className="App" id="anni-project-manager-app">
       <header>
         Anni Project Manager Application
         <ul>

@@ -1,14 +1,21 @@
 import createDropboxProvider from 'dbdbdb-provider';
-import { homepage } from '../../package.json';
 export * from './project';
-const authRedirect =
-  process.env.NODE_ENV === 'production' ? homepage : undefined;
+const { REACT_APP_INTEG_TEST } = process.env;
+let clientId = process.env.REACT_APP_DROPBOX_CLIENT_ID;
+let defaultAccessToken;
+
+if (REACT_APP_INTEG_TEST) {
+  const { integClientId, integAccessToken } = require('.ignore/integ-config');
+  clientId = integClientId;
+  defaultAccessToken = integAccessToken;
+}
 
 export const {
   DropboxContext,
   DropboxProvider,
   useDropboxClient,
 } = createDropboxProvider({
-  clientId: 'swbiv6r9kwfs4os',
-  authRedirect,
+  clientId,
+  authRedirect: process.env.PUBLIC_URL || window.location.origin,
+  defaultAccessToken,
 });
