@@ -5,14 +5,12 @@ import Project from 'project';
 import NotFound from 'NotFound';
 import { Router, Link } from '@reach/router';
 import { projects as demoProjects } from 'test/fixtures';
-import { makeRoutePath } from 'utils/routing';
 import Loader from 'shared/Loader';
 import { saveProjects, useDropboxClient } from 'shared';
+import { makeRoutePath } from 'utils/routing';
 import 'App.css';
 
-const HOME_PATH = makeRoutePath('/');
 const Home = () => <div>Home</div>;
-
 let lastProjectsState;
 
 function removeHash() {
@@ -122,7 +120,7 @@ export default function App({ defaultProjects = demoProjects }) {
         Anni Project Manager Application
         <ul>
           <li>
-            <Link to={HOME_PATH}>Home</Link>
+            <Link to={makeRoutePath('/')}>Home</Link>
           </li>
           {client && (
             <li>
@@ -134,8 +132,8 @@ export default function App({ defaultProjects = demoProjects }) {
           </li>
         </ul>
       </header>
-      <Router>
-        <Home path={makeRoutePath('/')} />
+      <Router basePath={process.env.REACT_APP_BASE_PATH}>
+        <Home path={process.env.REACT_APP_BASE_PATH} />
         <Dashboard
           path={makeRoutePath('dashboard')}
           projects={projects}
