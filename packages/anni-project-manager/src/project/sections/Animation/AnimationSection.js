@@ -2,7 +2,7 @@ import React, { useEffect, useState, useReducer } from 'react';
 import isEqual from 'lodash/isEqual';
 import Loader from 'shared/Loader';
 import { useDropboxClient } from 'shared';
-import CanvasImageScrubber from 'canvas-image-scrubber';
+import Player from './Player';
 
 function FolderPicker({ onSelectFolder, selectedFolderId }) {
   const [folders, setFolders] = useState(null);
@@ -120,14 +120,7 @@ export default function AnimationSection({
       />
       {selectedFolder &&
         (Array.isArray(files) ? (
-          <div>
-            <CanvasImageScrubber
-              frames={files.map(f => f.url)}
-              render={({ renderViewer }) => {
-                return <div>{renderViewer}</div>;
-              }}
-            />
-          </div>
+          <Player frames={files.map(f => f.url)} />
         ) : (
           <Loader />
         ))}
