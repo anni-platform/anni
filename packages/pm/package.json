@@ -1,11 +1,11 @@
 {
-  "name": "anni-project-manager-application",
-  "version": "0.1.0",
+  "name": "@anni/pm",
+  "version": "0.2.0",
   "private": true,
   "dependencies": {
+    "@anni/player": "0.0.4",
     "@reach/router": "^1.2.1",
     "@sindresorhus/slugify": "^0.6.0",
-    "anni-player": "0.0.1",
     "dbdbdb-provider": "^0.0.4",
     "draft-js": "^0.10.5",
     "draft-js-counter-plugin": "^2.0.1",
@@ -61,13 +61,6 @@
     "reselect": "^4.0.0",
     "rimraf": "^2.6.3",
     "serve": "^11.0.1"
-  },
-  "lint-staged": {
-    "src/**/*.{js,jsx,json}": [
-      "npm run test:staged",
-      "eslint --fix",
-      "git add"
-    ]
   },
   "jest": {
     "collectCoverageFrom": [
