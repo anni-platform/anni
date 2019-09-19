@@ -1,2 +1,7 @@
-# anni
-monorepo for all the anni things
+# @anni
+
+## Setup
+
+```bash
+npx lerna bootstrap
+```
