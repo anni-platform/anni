@@ -1,6 +1,6 @@
 {
-  "name": "anni-ui-library",
-  "version": "0.0.2",
+  "name": "@anni/ui",
+  "version": "0.1.0",
   "description": "",
   "main": "index.js",
   "scripts": {
