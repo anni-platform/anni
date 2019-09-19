@@ -13,13 +13,6 @@
     "start": "start-storybook -p 9001 -c .storybook",
     "test": "jest"
   },
-  "lint-staged": {
-    "src/**/*.{js,jsx,json}": [
-      "eslint --fix",
-      "stylelint './src/**/*.js'",
-      "git add"
-    ]
-  },
   "keywords": [],
   "author": "Jonathan Hudak",
   "license": "MIT",
